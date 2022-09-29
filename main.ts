@@ -5,6 +5,7 @@ namespace SpriteKind {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     apple.ay = 25 * Math.sin(angle)
     apple.ax = 25 * Math.cos(angle)
+    fire_ball.setFlag(SpriteFlag.Invisible, false)
 })
 controller.right.onEvent(ControllerButtonEvent.Repeated, function () {
     angle += -30 * (3.14 / 180)
@@ -14,12 +15,33 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.darkGroundSouth, function
 })
 controller.A.onEvent(ControllerButtonEvent.Released, function () {
     apple.ay = 20
+    fire_ball.setFlag(SpriteFlag.Invisible, true)
 })
 controller.left.onEvent(ControllerButtonEvent.Repeated, function () {
     angle += 30 * (3.14 / 180)
 })
 let apple: Sprite = null
 let angle = 0
+let fire_ball: Sprite = null
+fire_ball = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . 4 4 4 4 . . . . . . 
+    . . . . 4 4 4 5 5 4 4 4 . . . . 
+    . . . 3 3 3 3 4 4 4 4 4 4 . . . 
+    . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
+    . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
+    . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
+    . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
+    . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
+    . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
+    . . 4 2 3 3 2 4 4 4 4 4 2 4 . . 
+    . . 4 2 2 3 2 2 4 4 4 2 4 4 . . 
+    . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+    . . . . 4 4 2 2 2 2 4 4 . . . . 
+    . . . . . . 4 4 4 4 . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Projectile)
+fire_ball.setFlag(SpriteFlag.Invisible, true)
 angle = 0
 tiles.setCurrentTilemap(tilemap`level1`)
 effects.confetti.startScreenEffect()
@@ -57,4 +79,5 @@ game.onUpdate(function () {
     miniap = sprites.create(minimap.getImage(myMinimap), SpriteKind.MAP)
     miniap.setPosition(apple.x - 50, apple.y - 30)
     enging.setPosition(apple.x + -8 * Math.cos(angle), apple.y + -8 * Math.sin(angle))
+    fire_ball.setPosition(apple.x + -8 * Math.cos(angle), apple.y + -8 * Math.sin(angle))
 })
